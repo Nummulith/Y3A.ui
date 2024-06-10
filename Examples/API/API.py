@@ -1,21 +1,16 @@
-import boto3
-
-name = "pavel-api"
-
-
 def API(aws, param):
     print("((( --- API")
 
     with open("./Y3A/Examples/API/API.yaml", 'r') as file: yaml = file.read()
-    aws.CloudFormation_Stack.create(name, yaml) # , {'Name': name}
+    aws.CloudFormation_Stack.create(param, yaml) # , {'Name': param}
 
     print("--- )))")
 
     update(aws)
 
 
-def uploadfile(aws):
-    bucket_name = name + ".cctstudents.com"
+def uploadfile(aws, param):
+    bucket_name = param + ".cctstudents.com"
     file_path = './Y3A/Examples/API/index.html'
     s3_key = 'index.html'
 
@@ -27,9 +22,9 @@ def update(aws, param):
     print("((( --- update")
 
     with open("./Y3A/Examples/API/lambda.py", 'r') as file: Code = file.read()
-    aws.Lambda_Function.Class.update_code(name, Code)
+    aws.Lambda_Function.Class.update_code(param, Code)
 
-    uploadfile(aws)
+    uploadfile(aws, param)
 
     print("--- )))")
 
@@ -37,7 +32,7 @@ def update(aws, param):
 def clean(aws, param):
     print("((( --- clean")
 
-    aws.S3_Bucket.Class.clear_bucket(f"{name}.cctstudents.com")
-    aws.CloudFormation_Stack.delete(name)
+    aws.S3_Bucket.Class.clear_bucket(f"{param}.cctstudents.com")
+    aws.CloudFormation_Stack.delete(param)
 
     print("--- )))")

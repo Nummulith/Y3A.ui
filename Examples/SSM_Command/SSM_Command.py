@@ -34,7 +34,7 @@ def Test0(aws, param):
 def Test1(aws, param):
 
     # Создайте объект клиента SSM
-    ssm_client = boto3.client('ssm')
+    ssm_client = bt('ssm')
 
     # Укажите ID вашего EC2-инстанса
     instance_id = 'your_instance_id'

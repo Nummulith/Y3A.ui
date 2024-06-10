@@ -23,6 +23,24 @@ from PyQt5.uic import loadUi
 
 from Y3A import Y3A
 
+
+def example(aws, module_name, function_name = None, param = None):
+    """ 'Example' run """
+
+    if function_name == None:
+        function_name = module_name
+
+    try:
+        module = importlib.import_module(f"Examples." + module_name + "." + module_name)
+        importlib.reload(module)
+
+        func = getattr(module, function_name)
+        func(aws, param)
+                
+    except Exception as e:
+        print(f"Example: An exception occurred: {type(e).__name__} - {e}")
+
+
 class MyWidget(QWidget):
     """ GUI Window """
 
@@ -30,9 +48,9 @@ class MyWidget(QWidget):
         super(MyWidget, self).__init__()
         loadUi('./Y3A.ui', self)
 
-        self.bExample .clicked.connect(lambda: self.example(func = None    ))
-        self.bExUpdate.clicked.connect(lambda: self.example(func = "update"))
-        self.bExClean .clicked.connect(lambda: self.example(func = "clean" ))
+        self.bExample .clicked.connect(lambda: self.run_example(func = None    ))
+        self.bExUpdate.clicked.connect(lambda: self.run_example(func = "update"))
+        self.bExClean .clicked.connect(lambda: self.run_example(func = "clean" ))
 
         self.bFetch   .clicked.connect(self.fetch)
         self.bRelease .clicked.connect(self.release)
@@ -43,10 +61,12 @@ class MyWidget(QWidget):
         self.bShow    .clicked.connect(self.show_object)
         self.bReset   .clicked.connect(self.reset)
 
-        self.leProfile.setText("TS" )
+        self.leProfile.setText("TS")
         self.leFile   .setText("main")
-        self.leClasses.setText("All")
-        self.leExample.setText("Test")
+        self.leClasses.setText("EC2_VPCEndpoint")
+
+        self.leExample.setText("InterVPC")
+        self.leParam  .setText("Pavel")
 
         self.cbAWS .setChecked(True)
         self.cbLoad.setChecked(True)
@@ -62,6 +82,9 @@ class MyWidget(QWidget):
                 f"./Data/{self.leProfile.text()}_{self.leFile.text()}.xml",
                 do_auto_load, do_auto_save
             )
+        
+        self.y3a.do_auto_load = do_auto_load
+        self.y3a.do_auto_save = do_auto_save
 
         return self.y3a
 
@@ -73,6 +96,7 @@ class MyWidget(QWidget):
         aws = self.get_aws(True, False)
         aws.fetch(self.leClasses.text())
         aws.save()
+
 
     def release(self):
         """ 'Release' button click """
@@ -86,24 +110,22 @@ class MyWidget(QWidget):
         aws.release("ALL")
         aws.save()
 
+
+    def draw(self):
+        """ 'Draw' button click """
+        aws = self.get_aws(True, True)
+
+        res = aws.html(self.leClasses.text())
+        with open(f"./Data/{self.leProfile.text()}_{self.leFile.text()}.html", 'w') as file:
+            file.write(res)
+
     def redraw(self):
         """ 'reDraw' button click """
         aws = self.get_aws(False, False)
         aws.fetch(self.leClasses.text())
         aws.save()
 
-        aws.draw(self.leClasses.text())
-
-
-    def draw(self):
-        """ 'Draw' button click """
-        aws = self.get_aws(False, False)
-        aws.load()
-        aws.save()
-
-        res = aws.html(self.leClasses.text())
-        with open(f"./Data/{self.leProfile.text()}_{self.leFile.text()}.html", 'w') as file:
-            file.write(res)
+        self.draw()
 
 
     def delete(self):
@@ -111,6 +133,7 @@ class MyWidget(QWidget):
         aws = self.get_aws()
         aws.save() #
         aws.delete_all()
+
 
     def show_object(self):
         """ 'show' button click """
@@ -146,26 +169,14 @@ class MyWidget(QWidget):
 
         print("")
 
-    def example(self, func = None):
+
+    def run_example(self, func = None):
         """ 'Example' button click """
 
         auto = self.cbLoad.isChecked()
         aws = self.get_aws(auto, auto) if self.cbAWS.isChecked() else None
-#        aws.CallClasses = self.leClasses.text()
 
-        module_name = self.leExample.text()
-        param       = self.leParam.text()
-        function_name = module_name if func == None else func
-
-        try:
-            module = importlib.import_module(f"Examples." + module_name + "." + module_name)
-            importlib.reload(module)
-
-            func = getattr(module, function_name)
-            func(aws, param)
-
-        except Exception as e:
-            print(f"Example: An exception occurred: {type(e).__name__} - {e}")
+        example(aws, self.leExample.text(), func, self.leParam.text())
 
         if aws != None and auto:
             aws.save()
