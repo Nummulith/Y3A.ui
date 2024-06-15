@@ -58,15 +58,18 @@ class MyWidget(QWidget):
         self.bDraw    .clicked.connect(self.draw)
         self.bReDraw  .clicked.connect(self.redraw)
         self.bDelete  .clicked.connect(self.delete)
-        self.bShow    .clicked.connect(self.show_object)
-        self.bReset   .clicked.connect(self.reset)
 
-        self.leProfile.setText("TS")
+        self.bObjectFetch.clicked.connect(self.object_fetch)
+        self.bShow       .clicked.connect(self.object_show )
+
+        self.bReset.clicked.connect(self.reset)
+
+        self.leProfile.setText("PE")
         self.leFile   .setText("main")
-        self.leClasses.setText("EC2_VPCEndpoint")
+        self.leClasses.setText("ALL")
 
-        self.leExample.setText("InterVPC")
-        self.leParam  .setText("Pavel")
+        self.leExample.setText("YAML")
+        self.leParam  .setText("Inter_VPC")
 
         self.cbAWS .setChecked(True)
         self.cbLoad.setChecked(True)
@@ -135,18 +138,11 @@ class MyWidget(QWidget):
         aws.delete_all()
 
 
-    def show_object(self):
-        """ 'show' button click """
-        aws = self.get_aws()
-
+    def object_fetch(self):
+        """ 'fetch' button click """
+        aws      = self.get_aws()
         res_type = self.leType.text()
         res_id   = self.leId.text()
-
-        # res_type = "CloudFormation_Stack"
-        # res_id = "ECS-Console-V2-Service-wind-service-wind-0a454f7f"
-
-        print("=========")
-        print(f"{res_type}::{res_id}")
 
         try:
             wrap = getattr(aws, res_type)
@@ -155,6 +151,24 @@ class MyWidget(QWidget):
         except Exception as e:
             print(f"show: An exception occurred: {type(e).__name__} - {e}")
             return
+
+
+    def object_show(self):
+        """ 'show' button click """
+        aws = self.get_aws()
+        res_type = self.leType.text()
+        res_id   = self.leId.text()
+
+        try:
+            wrap = getattr(aws, res_type)
+            obj = wrap.fetch(res_id)[0]
+
+        except Exception as e:
+            print(f"show: An exception occurred: {type(e).__name__} - {e}")
+            return
+
+        print("=========")
+        print(f"{res_type}::{res_id}")
 
         for field in [attr for attr in dir(obj)]:
             if field.startswith('__') and field.endswith('__'):

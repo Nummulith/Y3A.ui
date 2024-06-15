@@ -61,7 +61,7 @@ def InterVPC(aws, param):
     print("( creating ---")
 
 
-    key = aws.EC2_KeyPair.create(param, f'./PublicKeys/{param}.pem')
+    keyid = aws.EC2_KeyPair.create(param, f'./PublicKeys/{param}.pem')
     print(f"Key = {key}")
 
 

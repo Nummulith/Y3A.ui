@@ -3,3 +3,9 @@ def Test(aws, param):
 
 
     print("---)")
+
+def clean(aws, param):
+    print("(---")
+
+
+    print("---)")

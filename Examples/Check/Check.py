@@ -1,8 +1,5 @@
 def Check(aws, param):
-    print("(---")
+    print(f"Running Check({param})")
 
-    print(f"Calling Check({param})")
-    print("AWS:")
-    aws.print()
-
-    print("---)")
+def clean(aws, param):
+    print(f"Cleaning Check({param})")

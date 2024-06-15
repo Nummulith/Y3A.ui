@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>474</width>
+    <width>443</width>
     <height>197</height>
    </rect>
   </property>
@@ -370,6 +370,13 @@
          </item>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_13">
+           <item>
+            <widget class="QPushButton" name="bObjectFetch">
+             <property name="text">
+              <string>Fetch</string>
+             </property>
+            </widget>
+           </item>
            <item>
             <widget class="QPushButton" name="bShow">
              <property name="text">
