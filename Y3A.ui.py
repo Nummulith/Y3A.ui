@@ -31,7 +31,7 @@ def example(aws, module_name, function_name = None, param = None):
         function_name = module_name
 
     try:
-        module = importlib.import_module(f"Examples." + module_name + "." + module_name)
+        module = importlib.import_module(f"../Examples." + module_name + "." + module_name)
         importlib.reload(module)
 
         func = getattr(module, function_name)
@@ -66,7 +66,7 @@ class MyWidget(QWidget):
 
         self.leProfile.setText("PE")
         self.leFile   .setText("all")
-        self.leClasses.setText("ALL")
+        self.leClasses.setText("All")
 
         self.leExample.setText("YAML")
         self.leParam  .setText("Lambda")
