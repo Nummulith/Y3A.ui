@@ -65,11 +65,11 @@ class MyWidget(QWidget):
         self.bReset.clicked.connect(self.reset)
 
         self.leProfile.setText("PE")
-        self.leFile   .setText("main")
+        self.leFile   .setText("all")
         self.leClasses.setText("ALL")
 
         self.leExample.setText("YAML")
-        self.leParam  .setText("Inter_VPC")
+        self.leParam  .setText("Lambda")
 
         self.cbAWS .setChecked(True)
         self.cbLoad.setChecked(True)

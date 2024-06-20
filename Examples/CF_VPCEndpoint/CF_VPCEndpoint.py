@@ -9,7 +9,7 @@ def CF_VPCEndpoint(aws, param):
     Vpc  = aws.get_cf_res(list, is_vpc)
     rt   = aws.get_cf_res(list, is_rt)
 
-    return aws.EC2_VPCEndpoint.create(Vpc.get_id(), rt.get_id(), "Gateway", "arn:aws:s3:::pavel-endpoint")
+    return aws.EC2_VPCEndpoint.create(Vpc.get_id(), rt.get_id(), "Gateway", "com.amazonaws.eu-central-1.s3")
 
-def clean(aws, param):
-    aws.EC2_VPCEndpoint.delete(param)
+def clean(aws, param, result):
+    aws.EC2_VPCEndpoint.delete(result)

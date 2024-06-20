@@ -1,5 +1,5 @@
 def Role(aws, param):
-    print(f"Role({param})")
+    return aws.IAM_Role.create(param["Name"])
 
-def clean(aws, param):
-    print(f"Cleaning Role({param})")
+def clean(aws, param, result):
+    aws.IAM_Role.delete(param["Name"])

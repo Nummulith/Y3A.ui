@@ -93,7 +93,7 @@ def doYAML(aws, filename, param, result = None):
 
         res = example(aws, ex["Example"], param, ex["Param"], res)
 
-        if param == None:
+        if param == None or (param == "update" and res != None):
             ex["Result"] = res
         if param == "clean":
             ex["Result"] = None
