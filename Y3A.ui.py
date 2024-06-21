@@ -16,7 +16,7 @@ Run the application
 Author: Pavel ERESKO
 """
 
-import importlib
+import importlib.util
 
 from PyQt5.QtWidgets import QApplication, QWidget
 from PyQt5.uic import loadUi
@@ -24,18 +24,19 @@ from PyQt5.uic import loadUi
 from Y3A import Y3A
 
 
-def example(aws, module_name, function_name = None, param = None):
+def example(aws, module_name, function_name = None, param = None, result = None):
     """ 'Example' run """
 
     if function_name == None:
         function_name = module_name
+    module_path = f"../Y3A.X/{module_name}/{module_name}.py"
 
     try:
-        module = importlib.import_module(f"../Examples." + module_name + "." + module_name)
-        importlib.reload(module)
-
+        spec = importlib.util.spec_from_file_location('module_name', module_path)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
         func = getattr(module, function_name)
-        func(aws, param)
+        func(aws, param, result)
                 
     except Exception as e:
         print(f"Example: An exception occurred: {type(e).__name__} - {e}")
@@ -66,10 +67,10 @@ class MyWidget(QWidget):
 
         self.leProfile.setText("PE")
         self.leFile   .setText("all")
-        self.leClasses.setText("All")
+        self.leClasses.setText("KMS_Key")
 
         self.leExample.setText("YAML")
-        self.leParam  .setText("Lambda")
+        self.leParam  .setText("Check")
 
         self.cbAWS .setChecked(True)
         self.cbLoad.setChecked(True)
