@@ -65,12 +65,15 @@ class MyWidget(QWidget):
 
         self.bReset.clicked.connect(self.reset)
 
-        self.leProfile.setText("PE")
-        self.leFile   .setText("all")
-        self.leClasses.setText("KMS_Key")
+        self.tTabs.setCurrentIndex(1)
+
+        self.leClasses.setText("IAM")
 
         self.leExample.setText("YAML")
         self.leParam  .setText("Check")
+
+        self.leProfile.setText("PE")
+        self.leFile   .setText("all")
 
         self.cbAWS .setChecked(True)
         self.cbLoad.setChecked(True)
