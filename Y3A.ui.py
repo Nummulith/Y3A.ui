@@ -73,7 +73,7 @@ class MyWidget(QWidget):
         self.leParam  .setText("Check")
 
         self.leProfile.setText("PE")
-        self.leFile   .setText("all")
+        self.leFile   .setText("IAM")
 
         self.cbAWS .setChecked(True)
         self.cbLoad.setChecked(True)
@@ -150,7 +150,7 @@ class MyWidget(QWidget):
 
         try:
             wrap = getattr(aws, res_type)
-            obj = wrap.fetch(res_id)[0]
+            obj = wrap.fetch(res_id, refetch = True)[0]
 
         except Exception as e:
             print(f"show: An exception occurred: {type(e).__name__} - {e}")
